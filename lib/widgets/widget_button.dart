@@ -4,7 +4,7 @@ class Buttons extends StatelessWidget {
   final IconData icon;
   final void Function() onPressed;
 
-  const Buttons({super.key, required this.icon, required this.onPressed}); // Construtor
+  const Buttons({super.key, required this.icon, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +15,12 @@ class Buttons extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6), // Radius
+            borderRadius: BorderRadius.circular(6),
           ),
         ),
         child: Center(
-          child: Icon(icon, size: 106), // Ícone centralizado
-        ), // Substituindo o texto pelo ícone
+          child: Icon(icon, size: 106),
+        ),
       ),
     );
   }

@@ -58,7 +58,6 @@ class _HomeState extends State<Home> {
         codigoLido = res;
       });
 
-      // Navegar para tela do mapa.
       Navigator.push(
         context,
         MaterialPageRoute(
