@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/maps/mapa_1.png
     - assets/maps/mapa_2.png
+    - assets/maps/mapa_3.png
     - assets/splash_screen_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
