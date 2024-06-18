@@ -1,42 +1,40 @@
 import 'package:flutter/material.dart';
+import 'database_helper.dart';
 
 class QRCodeResultScreen extends StatelessWidget {
   final String codigo;
 
-  const QRCodeResultScreen({Key? key, required this.codigo}) : super(key: key);
+  const QRCodeResultScreen({super.key, required this.codigo});
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath = _getImagePath(codigo);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mapa da faculdade", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.red,
       ),
-      body: imagePath.isNotEmpty
-          ? Center(
-        child: Image.asset(imagePath, fit: BoxFit.contain),
-      )
-          : const Center(
-        child: Text(
-          'Mapa não encontrado',
-          style: TextStyle(fontSize: 24),
-        ),
+      body: FutureBuilder<Map<String, dynamic>?>(
+        future: _getQRCodeData(codigo),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erro: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(child: Text('QR Code não encontrado.',style: TextStyle(fontSize: 24),));
+          } else {
+            String imagePath = snapshot.data!['image'];
+            return Center(
+              child: Image.asset(imagePath),
+            );
+          }
+        },
       ),
     );
   }
 
-  String _getImagePath(String codigo) {
-    // Substitua este método pelo mapeamento real de códigos para imagens
-    switch (codigo) {
-      case "0001":
-        return 'assets/maps/mapa_1.png';
-      case "0002":
-        return 'assets/maps/mapa_2.png';
-    // Adicione mais casos conforme necessário
-      default:
-        return '';
-    }
+  Future<Map<String, dynamic>?> _getQRCodeData(String code) async {
+    DatabaseHelper db = DatabaseHelper();
+    return await db.getQRCode(code);
   }
 }
